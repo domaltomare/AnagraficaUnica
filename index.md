@@ -110,3 +110,96 @@ Esempio di risposta per tipo_soggetto: "LIBERO_PROFESSIONISTA":
   "dataUltimoAggiornamento": "2025-01-10T14:09:02.792228"
 }
 ```
+
+# 4. API AU Dipendenti
+
+La seguente API descrive le specifiche dei servizi esposti da AU per la componente dei dipendenti.
+
+La specifica openapi è consultabile al file YAML [specifiche-servizi-au-dipendenti.yaml](/dipendenti/specifiche-interfacce/specifiche-servizi-au-dipendenti.yaml).
+
+
+### 4.1 - Servizio *GET /dipendenti*
+
+Il servizio restituisce l'elenco dei dipendenti regionali.
+
+La ricerca sarà effettuata attraverso i seguenti filtri di ricerca:
+
+- **id**: cid del dipendente
+- **nomeCompleto**:
+- **codiceFiscale**:    
+- **strutturaOrganizzativa**:
+- **statoDipendente**:   
+- **tipoStrutturaOrganizzativa**:
+- **pageNum**:
+- **pageSize**:
+- **sort**:
+- **direction**:
+- **q**:
+
+#### 4.1.1 - Esempio di Request
+
+**GET** `https://api-gw.regione.puglia.it/api/au/dipendenti/2.0/dipendenti?id=00000`
+
+**Header**: `*Authorization: Bearer token_api_puglia_generato*`
+
+#### 4.1.2 - Esempio di Response
+
+
+### 4.2 - Servizio *GET /strutture-organizzative*
+
+Il servizio restituisce l'elenco delle strutture organizzative.
+
+La ricerca sarà effettuata attraverso i seguenti filtri di ricerca:
+
+#### 4.2.1 - Esempio di Request
+
+**GET** ``
+
+**Header**: `*Authorization: Bearer token_api_puglia_generato*`
+
+#### 4.2.2 - Esempio di Response
+
+### 4.3 - Servizio *GET /documenti*
+
+Il servizio restituisce l'elenco dei documenti per dipendente regionale.
+
+La ricerca sarà effettuata attraverso i seguenti filtri di ricerca:
+
+
+#### 4.3.1 - Esempio di Request
+
+**GET** ``
+
+**Header**: `*Authorization: Bearer token_api_puglia_generato*`
+
+#### 4.3.2 - Esempio di Response
+
+
+### 4.4 - Servizio *GET /incarichi-dirigenziali*
+
+Il servizio restituisce l'elenco degli incarichi dirigenziali.
+
+La ricerca sarà effettuata attraverso i seguenti filtri di ricerca:
+
+#### 4.4.1 - Esempio di Request
+
+**GET** ``
+
+**Header**: `*Authorization: Bearer token_api_puglia_generato*`
+
+#### 4.4.2 - Esempio di Response
+
+
+### 4.5 - Servizio *GET /elevate-qualificazioni*
+
+Il servizio permette di ricercare le elevate qualificazioni.
+
+La ricerca sarà effettuata attraverso i seguenti filtri di ricerca:
+
+#### 4.5.1 - Esempio di Request
+
+**GET** ``
+
+**Header**: `*Authorization: Bearer token_api_puglia_generato*`
+
+#### 4.5.2 - Esempio di Response
