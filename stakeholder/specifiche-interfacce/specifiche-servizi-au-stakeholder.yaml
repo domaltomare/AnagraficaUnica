@@ -1,0 +1,560 @@
+openapi: 3.0.1
+info:
+  title: Anagrafica Unica - Stakeholder
+  version: 1.0.0
+servers:
+  - url: https://api-gw.regione.puglia.it/api/au/stakeholder/2.0
+security:
+  - default: []
+tags:
+  - name: Anagrafiche
+    description: Servizi per la consultazione delle anagrafiche
+paths:
+  /anagrafica/{tipoSoggetto}/{chiave}:
+    get:
+      tags:
+        - Anagrafiche
+      summary: Dati anagrafici
+      description: API Rest per il recupero di dati anagrafici in base al tipoSoggetto e chiave
+      operationId: findAnagraficheByChiave
+      parameters:
+        - name: tipoSoggetto
+          in: path
+          required: true
+          style: simple
+          explode: false
+          schema:
+            type: string
+            enum:
+              - IMPRESA
+              - LIBERO_PROFESSIONISTA
+        - name: chiave
+          in: path
+          required: true
+          style: simple
+          explode: false
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RestResponse'
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RestResponse'
+        '404':
+          description: Not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RestResponse'
+      security:
+        - default: []
+      x-auth-type: Application & Application User
+      x-throttling-tier: Unlimited
+components:
+  schemas:
+    AlbiRuoliLicenzeRidottiDto:
+      type: object
+      properties:
+        ruoli-ridotti:
+          $ref: '#/components/schemas/RuoliRidottiDto'
+    AmministrazioneControlloDto:
+      type: object
+      properties:
+        sistema-amministrazione:
+          $ref: '#/components/schemas/SistemaAmministrazioneDto'
+        forme-amministrative:
+          $ref: '#/components/schemas/FormeAmministrativeDto'
+        collegio-sindacale:
+          $ref: '#/components/schemas/CollegioSindacaleDto'
+    AnagraficaTitolareDto:
+      type: object
+      properties:
+        value:
+          type: string
+        denominazione:
+          type: string
+        cognome:
+          type: object
+        nome:
+          type: object
+        c-fiscale:
+          type: string
+    AttiConferimentoCaricheDto:
+      type: object
+      properties:
+        atto-conferimento-cariche:
+          type: array
+          items:
+            $ref: '#/components/schemas/AttoConferimentoCaricheDto'
+    AttoConferimentoCaricheDto:
+      type: object
+      properties:
+        cariche:
+          $ref: '#/components/schemas/CaricheDto'
+        poteri-persona:
+          $ref: '#/components/schemas/PoteriPersonaDto'
+    CapitaleSocialeDto:
+      type: object
+      properties:
+        deliberato:
+          $ref: '#/components/schemas/DeliberatoDto'
+        sottoscritto:
+          $ref: '#/components/schemas/SottoscrittoDto'
+        versato:
+          $ref: '#/components/schemas/VersatoDto'
+        valuta:
+          type: string
+        c-valuta:
+          type: string
+    CaricaDto:
+      type: object
+      properties:
+        value:
+          type: string
+        c-carica:
+          type: string
+    CaricheDto:
+      type: object
+      properties:
+        carica:
+          $ref: '#/components/schemas/CaricaDto'
+    ClassificazioneAtecoDto:
+      type: object
+      properties:
+        value:
+          type: string
+        attivita:
+          type: string
+        importanza:
+          type: string
+        c-attivita:
+          type: string
+        c-importanza:
+          type: string
+    ClassificazioniAtecoDto:
+      type: object
+      properties:
+        codifica:
+          type: string
+        classificazione-ateco:
+          type: array
+          items:
+            $ref: '#/components/schemas/ClassificazioneAtecoDto'
+        c-codifica:
+          type: integer
+          format: int32
+    CollegioSindacaleDto:
+      type: object
+      properties:
+        value:
+          type: string
+        n-effettivi:
+          type: integer
+          format: int32
+        n-supplenti:
+          type: integer
+          format: int32
+    ComposizioneQuoteDto:
+      type: object
+      properties:
+        value:
+          type: string
+        tipo:
+          type: string
+        'n':
+          type: string
+        valuta:
+          type: string
+        c-tipo:
+          type: integer
+          format: int32
+        c-valuta:
+          type: string
+        valore-nominale:
+          type: string
+    DatiIdentificativiDto:
+      type: object
+      properties:
+        fonte:
+          type: string
+        denominazione:
+          type: string
+        cciaa:
+          type: string
+        forma-giuridica:
+          $ref: '#/components/schemas/FormaGiuridicaDto'
+        indirizzo-localizzazione:
+          $ref: '#/components/schemas/IndirizzoLocalizzazioneDto'
+        indirizzo-posta-certificata:
+          type: string
+        c-fonte:
+          type: string
+        tipo-soggetto:
+          type: string
+        descrizione-tipo-soggetto:
+          type: string
+        tipo-impresa:
+          type: string
+        descrizione-tipo-impresa:
+          type: string
+        dt-iscrizione-rea:
+          type: string
+        dt-atto-costituzione:
+          type: string
+        c-fiscale:
+          type: string
+        partita-iva:
+          type: string
+        n-rea:
+          type: integer
+          format: int32
+    DeliberatoDto:
+      type: object
+      properties:
+        value:
+          type: string
+        ammontare:
+          type: string
+    DirittoPartecipazioneDto:
+      type: object
+      properties:
+        value:
+          type: string
+        tipo:
+          type: string
+        c-tipo:
+          type: integer
+          format: int32
+    DurataSocietaDto:
+      type: object
+      properties:
+        scadenza-esercizi:
+          $ref: '#/components/schemas/ScadenzaEserciziDto'
+        dt-termine:
+          type: string
+    ElencoSociDto:
+      type: object
+      properties:
+        riquadri:
+          $ref: '#/components/schemas/RiquadriDto'
+        dt-soci-titolari-al:
+          type: string
+    EstremiNascitaDto:
+      type: object
+      properties:
+        value:
+          type: string
+        dt:
+          type: string
+    FormaAmministrativaDto:
+      type: object
+      properties:
+        value:
+          type: string
+        c:
+          type: string
+        f-in-carica:
+          type: string
+        f-organo-controllo:
+          type: string
+    FormaGiuridicaDto:
+      type: object
+      properties:
+        value:
+          type: string
+        c:
+          type: string
+    FormeAmministrativeDto:
+      type: object
+      properties:
+        forma-amministrativa:
+          $ref: '#/components/schemas/FormaAmministrativaDto'
+    IndirizzoLocalizzazioneDto:
+      type: object
+      properties:
+        value:
+          type: string
+        comune:
+          type: string
+        provincia:
+          type: string
+        toponimo:
+          type: string
+        via:
+          type: string
+        cap:
+          type: string
+        c-comune:
+          type: string
+        c-toponimo:
+          type: string
+        n-civico:
+          type: string
+    InfoAttivitaDto:
+      type: object
+      properties:
+        attivita-esercitata:
+          type: string
+        classificazioni-ateco:
+          $ref: '#/components/schemas/ClassificazioniAtecoDto'
+        attivita-prevalente:
+          type: string
+        dt-inizio-attivita-impresa:
+          type: string
+    InfoPatrimonialiFinanziarieDto:
+      type: object
+      properties:
+        capitale-sociale:
+          $ref: '#/components/schemas/CapitaleSocialeDto'
+    InfoStatutoDto:
+      type: object
+      properties:
+        durata-societa:
+          $ref: '#/components/schemas/DurataSocietaDto'
+    LiberoProfessionistaDto:
+      type: object
+      properties:
+        codiceFiscale:
+          type: string
+        nome:
+          type: string
+        cognome:
+          type: string
+        partitaIva:
+          type: string
+        telefono:
+          type: string
+        mail:
+          type: string
+        pec:
+          type: string
+    LocalizzazioneDto:
+      type: object
+      properties:
+        descrizione:
+          type: string
+        progressivo:
+          type: integer
+          format: int32
+        tipo:
+          type: string
+        sotto-tipi:
+          type: array
+          items:
+            $ref: '#/components/schemas/SottoTipoDto'
+        indirizzo-localizzazione:
+          $ref: '#/components/schemas/IndirizzoLocalizzazioneDto'
+        classificazione-ateco:
+          $ref: '#/components/schemas/ClassificazioniAtecoDto'
+        c-tipo:
+          type: string
+        dt-apertura:
+          type: string
+        sede-fuori-provincia:
+          $ref: '#/components/schemas/SedeFuoriProvinciaDto'
+    PersonaDto:
+      type: object
+      properties:
+        progressivo:
+          type: integer
+          format: int32
+        persona-fisica:
+          $ref: '#/components/schemas/PersonaFisicaDto'
+        atti-conferimento-cariche:
+          $ref: '#/components/schemas/AttiConferimentoCaricheDto'
+    PersonaFisicaDto:
+      type: object
+      properties:
+        cognome:
+          type: string
+        nome:
+          type: string
+        estremi-nascita:
+          $ref: '#/components/schemas/EstremiNascitaDto'
+        c-fiscale:
+          type: string
+    PersoneSedeDto:
+      type: object
+      properties:
+        persona:
+          type: array
+          items:
+            $ref: '#/components/schemas/PersonaDto'
+    PoteriPersonaDto:
+      type: object
+      properties:
+        value:
+          type: string
+        p-poteri:
+          type: integer
+          format: int32
+    RegistroImpreseResultDto:
+      type: object
+      properties:
+        dati-identificativi:
+          $ref: '#/components/schemas/DatiIdentificativiDto'
+        info-attivita:
+          $ref: '#/components/schemas/InfoAttivitaDto'
+        persone-sede:
+          $ref: '#/components/schemas/PersoneSedeDto'
+        elenco-soci:
+          $ref: '#/components/schemas/ElencoSociDto'
+        info-statuto:
+          $ref: '#/components/schemas/InfoStatutoDto'
+        amministrazione-controllo:
+          $ref: '#/components/schemas/AmministrazioneControlloDto'
+        info-patrimoniali-finanziarie:
+          $ref: '#/components/schemas/InfoPatrimonialiFinanziarieDto'
+        scritta-pco-s:
+          $ref: '#/components/schemas/ScrittaPcoSDto'
+        localizzazioni:
+          type: array
+          items:
+            $ref: '#/components/schemas/LocalizzazioneDto'
+        albi-ruoli-licenze-ridotti:
+          $ref: '#/components/schemas/AlbiRuoliLicenzeRidottiDto'
+    RestResponse:
+      type: object
+      properties:
+        data:
+          type: object
+          oneOf:
+            - $ref: '#/components/schemas/LiberoProfessionistaDto'
+            - $ref: '#/components/schemas/RegistroImpreseResultDto'
+        status:
+          type: string
+        message:
+          type: string
+        fonte:
+          type: string
+        fonteCertificata:
+          type: string
+        dataUltimoAggiornamento:
+          type: string
+          format: date-time
+    RiquadriDto:
+      type: object
+      properties:
+        riquadro:
+          type: array
+          items:
+            $ref: '#/components/schemas/RiquadroDto'
+    RiquadroDto:
+      type: object
+      properties:
+        titolari:
+          $ref: '#/components/schemas/TitolariDto'
+        composizione-quote:
+          $ref: '#/components/schemas/ComposizioneQuoteDto'
+    RuoliRidottiDto:
+      type: object
+      properties:
+        ruolo-ridotto:
+          type: array
+          items:
+            $ref: '#/components/schemas/RuoloRidottoDto'
+    RuoloRidottoDto:
+      type: object
+      properties:
+        value:
+          type: string
+        tipo:
+          type: string
+        'n':
+          type: string
+        provincia:
+          type: string
+        data:
+          type: string
+        c-tipo:
+          type: string
+        c-ente-rilascio:
+          type: string
+        ente-rilascio:
+          type: string
+    ScadenzaEserciziDto:
+      type: object
+      properties:
+        value:
+          type: string
+        dt-primo-esercizio:
+          type: string
+        esercizi-successivi:
+          type: string
+        giorni-proroga-bilancio:
+          type: integer
+          format: int32
+    ScrittaPcoSDto:
+      type: object
+      properties:
+        value:
+          type: string
+        f-presenza-pco-s:
+          type: string
+    SedeFuoriProvinciaDto:
+      type: object
+      properties:
+        value:
+          type: string
+        cciaa:
+          type: string
+        n-rea:
+          type: integer
+          format: int32
+    SistemaAmministrazioneDto:
+      type: object
+      properties:
+        value:
+          type: string
+        c:
+          type: string
+    SottoTipoDto:
+      type: object
+      properties:
+        c:
+          type: string
+        value:
+          type: string
+    SottoscrittoDto:
+      type: object
+      properties:
+        value:
+          type: string
+        ammontare:
+          type: string
+    TitolareDto:
+      type: object
+      properties:
+        anagrafica-titolare:
+          $ref: '#/components/schemas/AnagraficaTitolareDto'
+        diritto-partecipazione:
+          $ref: '#/components/schemas/DirittoPartecipazioneDto'
+    TitolariDto:
+      type: object
+      properties:
+        titolare:
+          type: array
+          items:
+            $ref: '#/components/schemas/TitolareDto'
+    VersatoDto:
+      type: object
+      properties:
+        value:
+          type: string
+        ammontare:
+          type: string
+  securitySchemes:
+    default:
+      type: oauth2
+      flows:
+        implicit:
+          authorizationUrl: https://api-gw.regione.puglia.it/authorize
+          scopes: {}
