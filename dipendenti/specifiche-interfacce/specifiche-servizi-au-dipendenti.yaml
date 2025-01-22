@@ -1,0 +1,1160 @@
+openapi: 3.0.1
+info:
+  title: Anagrafica Unica Dipendenti
+  version: 2.0.0
+servers:
+  - url: https://api-gw.regione.puglia.it/api/au/dipendenti/2.0
+tags:
+  - name: Organigramma Regionale
+    description: Servizi per la gestione dell' Organigramma Regionale
+  - name: CSV
+    description: Servizi per la produzione dei CSV
+  - name: Convenzioni
+    description: Servizi per la gestione delle convenzioni
+  - name: Consulenti
+    description: Servizi per la gestione dei consulenti
+paths:
+  /dipendenti:
+    get:
+      tags:
+        - Organigramma Regionale
+      summary: Elenco dipendenti regionali
+      description: Servizio che restituisce in base ai parametri inseriti l'elenco dei dipendenti in servizio
+      operationId: openSearchDipendenteRegionale
+      parameters:
+        - name: id
+          description: cid dipendente
+          in: query
+          required: false
+          schema:
+            type: integer
+            format: int64
+        - name: nomeCompleto
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: codiceFiscale
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: strutturaOrganizzativa
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: statoDipendente
+          in: query
+          required: false
+          schema:
+            type: string
+            enum:
+              - CENSITO
+              - TERMINATO
+        - name: tipoStrutturaOrganizzativa
+          in: query
+          required: false
+          schema:
+            type: string
+            enum:
+              - DIPARTIMENTO
+              - SEZIONE
+              - SERVIZIO
+        - name: pageNum
+          in: query
+          required: false
+          schema:
+            type: integer
+            format: int32
+        - name: pageSize
+          in: query
+          required: false
+          schema:
+            type: integer
+            format: int32
+        - name: sort
+          in: query
+          required: false
+          schema:
+            maxLength: 100
+            minLength: 0
+            type: string
+        - name: direction
+          in: query
+          required: false
+          schema:
+            type: string
+            enum:
+              - ASC
+              - DESC
+        - name: q
+          in: query
+          required: false
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PagedDtoDipendenteRegionaleOpenDto'
+  /strutture-organizzative:
+    get:
+      tags:
+        - Organigramma Regionale
+      summary: Elenco strutture organizzative
+      description: API Rest per la ricerca delle strutture organizzative
+      operationId: openSearchStrutturaOrganizzativa
+      parameters:
+        - name: codInca
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: denominazione
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: stato
+          in: query
+          required: false
+          schema:
+            type: string
+            enum:
+              - COMPILATA
+              - REGISTRATA
+              - CENSITA
+              - CESSATA
+        - name: tipologiaStruttura
+          in: query
+          required: false
+          schema:
+            type: string
+            enum:
+              - DIPARTIMENTO
+              - SEZIONE
+              - SERVIZIO
+        - name: equiparata
+          in: query
+          required: false
+          schema:
+            type: string
+            enum:
+              - S
+              - 'N'
+        - name: pageNum
+          in: query
+          required: false
+          schema:
+            type: integer
+            format: int32
+        - name: pageSize
+          in: query
+          required: false
+          schema:
+            type: integer
+            format: int32
+        - name: sort
+          in: query
+          required: false
+          schema:
+            maxLength: 100
+            minLength: 0
+            type: string
+        - name: direction
+          in: query
+          required: false
+          schema:
+            type: string
+            enum:
+              - ASC
+              - DESC
+        - name: q
+          in: query
+          required: false
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PagedDtoStrutturaOrganizzativaOpenDto'
+  /documenti:
+    get:
+      tags:
+        - Organigramma Regionale
+      summary: Elenco documenti per dipendenti regionale
+      description: API Rest per la ricerca dei documenti dei dipendenti regionali.
+      operationId: openSearchDocumenti
+      parameters:
+        - name: id
+          description: cid dipendente
+          in: query
+          required: true
+          schema:
+            type: integer
+            format: int64
+        - name: idTipoDocumento
+          in: query
+          required: false
+          schema:
+            type: string
+            enum:
+              - CURVIT
+              - DICINC
+              - DICRED
+              - DOCCOM
+              - MODA10
+              - MODA11
+        - name: annoRiferimento
+          in: query
+          required: false
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PagedDtoDocumentiDipendenteResponseDto'
+  /incarichi-dirigenziali:
+    get:
+      tags:
+        - Organigramma Regionale
+      summary: Elenco Incarichi Dirigenziali
+      description: API Rest per il recupero dell'elenco degli incarichi dirigenziali
+      operationId: openSearchIncaricoDirigenziale
+      parameters:
+        - name: codInca
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: denominazione
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: stato
+          in: query
+          required: false
+          schema:
+            type: string
+            enum:
+              - COMPILATA
+              - REGISTRATA
+              - CENSITA
+              - CESSATA
+        - name: tipologiaStruttura
+          in: query
+          required: false
+          schema:
+            type: string
+            enum:
+              - DIPARTIMENTO
+              - SEZIONE
+              - SERVIZIO
+        - name: equiparata
+          in: query
+          required: false
+          schema:
+            type: string
+            enum:
+              - S
+              - 'N'
+        - name: pageNum
+          in: query
+          required: false
+          schema:
+            type: integer
+            format: int32
+        - name: pageSize
+          in: query
+          required: false
+          schema:
+            type: integer
+            format: int32
+        - name: sort
+          in: query
+          required: false
+          schema:
+            maxLength: 100
+            minLength: 0
+            type: string
+        - name: direction
+          in: query
+          required: false
+          schema:
+            type: string
+            enum:
+              - ASC
+              - DESC
+        - name: q
+          in: query
+          required: false
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PagedDtoIncaricoDirigenzialeOpenDto'
+  /elevate-qualificazioni:
+    get:
+      tags:
+        - Organigramma Regionale
+      summary: Ricerca elevate qualificazioni
+      description: API Rest per la ricerca delle elevate qualificazioni
+      operationId: openSearchElevateQualificazioni
+      parameters:
+        - name: denominazione
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: strutturaOrganizzativa
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: stato
+          in: query
+          required: false
+          schema:
+            type: string
+            enum:
+              - BOZZA
+              - INSERITA
+              - INSERITA_E_COMUNICATA
+              - CREATA
+              - ASSOCIABILE
+              - ASSOCIATA
+              - DISATTIVATA
+        - name: tipo
+          in: query
+          required: false
+          schema:
+            type: string
+            enum:
+              - PO
+              - PO_EQUIPARATA
+        - name: pageNum
+          in: query
+          required: false
+          schema:
+            type: integer
+            format: int32
+        - name: pageSize
+          in: query
+          required: false
+          schema:
+            type: integer
+            format: int32
+        - name: sort
+          in: query
+          required: false
+          schema:
+            maxLength: 100
+            minLength: 0
+            type: string
+        - name: direction
+          in: query
+          required: false
+          schema:
+            type: string
+            enum:
+              - ASC
+              - DESC
+        - name: q
+          in: query
+          required: false
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PagedDtoElevateQualificazioniOpenDto'
+
+  /csv/tipologia-dipendenti-dipartimenti:
+    get:
+      tags:
+          - CSV
+      summary: CSV tipologia dipendenti dipartimenti
+      description: Produce il csv del rapporto fra dipartimenti e dipendenti.
+      operationId: openCsvDipartimentoDipendenti
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: string
+  /csv/rubrica:
+    get:
+      tags:
+        - CSV
+      summary: CSV rubrica
+      description: Produce il csv della rubrica dipendenti regionali.
+      operationId: openCsvRubrica
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: string
+                
+  /convenzioni:
+    get:
+      tags:
+        - Convenzioni
+      summary: Elenco convenzioni
+      description: API Rest per la ricerca delle convenzioni
+      operationId: openSearchConvenzioni
+      parameters:
+        - name: nomeConvenzione
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: scopoConvenzione
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: enteSottoscrittore
+          in: query
+          required: false
+          schema:
+            type: integer
+            format: int64
+        - name: responsabile
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: contattoTecnico
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: contattoAmministrativo
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: strutturaReferente
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: stato
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: pageNum
+          in: query
+          required: false
+          schema:
+            type: integer
+            format: int32
+        - name: pageSize
+          in: query
+          required: false
+          schema:
+            type: integer
+            format: int32
+        - name: sort
+          in: query
+          required: false
+          schema:
+            maxLength: 100
+            minLength: 0
+            type: string
+        - name: direction
+          in: query
+          required: false
+          schema:
+            type: string
+            enum:
+              - ASC
+              - DESC
+        - name: q
+          in: query
+          required: false
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PagedDtoConvenzioneOpenDto'
+  /consulenti:
+    get:
+      tags:
+        - Consulenti
+      summary: Elenco consulenti esterni
+      description: API Rest per la ricerca dei consulenti esterni.
+      operationId: openSearchConsulenteEsterno
+      parameters:
+        - name: id
+          in: query
+          required: false
+          schema:
+            type: integer
+            format: int64
+        - name: nomeCompleto
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: codiceFiscale
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: strutturaOrganizzativa
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: statoDipendente
+          in: query
+          required: false
+          schema:
+            type: string
+            enum:
+              - CENSITO
+              - TERMINATO
+        - name: tipoStrutturaOrganizzativa
+          in: query
+          required: false
+          schema:
+            type: string
+            enum:
+              - DIPARTIMENTO
+              - SEZIONE
+              - SERVIZIO
+        - name: pageNum
+          in: query
+          required: false
+          schema:
+            type: integer
+            format: int32
+        - name: pageSize
+          in: query
+          required: false
+          schema:
+            type: integer
+            format: int32
+        - name: sort
+          in: query
+          required: false
+          schema:
+            maxLength: 100
+            minLength: 0
+            type: string
+        - name: direction
+          in: query
+          required: false
+          schema:
+            type: string
+            enum:
+              - ASC
+              - DESC
+        - name: q
+          in: query
+          required: false
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PagedDtoConsulenteEsternoOpenDto'
+                
+components:
+  schemas:
+    DettaglioContattiSedeDto:
+      type: object
+      properties:
+        recapitiPec:
+          type: string
+        recapitiEmail:
+          type: string
+        recapitiFax:
+          type: string
+    PagedDtoStrutturaOrganizzativaOpenDto:
+      type: object
+      properties:
+        pageNum:
+          type: integer
+          format: int32
+        pageSize:
+          type: integer
+          format: int32
+        totalPages:
+          type: integer
+          format: int32
+        totalElements:
+          type: integer
+          format: int32
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/StrutturaOrganizzativaOpenDto'
+    SedeRegionaleOpenDto:
+      type: object
+      properties:
+        codiSede:
+          type: string
+        sedePrincipale:
+          type: boolean
+        contatti:
+          $ref: '#/components/schemas/DettaglioContattiSedeDto'
+    StrutturaOrganizzativaOpenDto:
+      type: object
+      properties:
+        codice:
+          type: string
+        descrizioneBreve:
+          type: string
+        descrizione:
+          type: string
+        codiceUfficioDetermine:
+          type: string
+        codiceUfficioDelibere:
+          type: string
+        codiceDipartimentoRagioneria:
+          type: string
+        codiceSezioneRagioneria:
+          type: string
+        codiceIpa:
+          type: string
+        pec:
+          type: string
+        email:
+          type: string
+        telefono:
+          type: string
+        fax:
+          type: string
+        indirizzo:
+          type: string
+        cap:
+          type: string
+        citta:
+          type: string
+        dataInizioValidita:
+          type: string
+          format: date
+        dataFineValidita:
+          type: string
+          format: date
+        codiceIncaricoPadre:
+          type: string
+        equiparata:
+          type: boolean
+        tipo:
+          type: string
+          enum:
+            - DIPARTIMENTO
+            - SEZIONE
+            - SERVIZIO
+        sedi:
+          type: array
+          items:
+            $ref: '#/components/schemas/SedeRegionaleOpenDto'
+    DatiIncaricoDirigenzialeOpenDto:
+      type: object
+      properties:
+        cid:
+          type: integer
+          format: int64
+        codiceFiscale:
+          type: string
+        cognome:
+          type: string
+        nome:
+          type: string
+        email:
+          type: string
+        idAssegnazione:
+          type: integer
+          format: int64
+        incarico:
+          type: string
+        codiceIncarico:
+          type: string
+        tipologiaIncarico:
+          type: string
+        descrizioneTipologiaIncarico:
+          type: string
+        estremiAttoConferimento:
+          type: string
+        estremiAttoDisassociazione:
+          type: string
+        dataInizioIncarico:
+          type: string
+          format: date
+        dataFineIncarico:
+          type: string
+          format: date
+    IncaricoDirigenzialeOpenDto:
+      type: object
+      properties:
+        codice:
+          type: string
+        descrizioneBreve:
+          type: string
+        descrizione:
+          type: string
+        codiceUfficioDetermine:
+          type: string
+        codiceUfficioDelibere:
+          type: string
+        codiceDipartimentoRagioneria:
+          type: string
+        codiceSezioneRagioneria:
+          type: string
+        codiceIpa:
+          type: string
+        pec:
+          type: string
+        email:
+          type: string
+        telefono:
+          type: string
+        fax:
+          type: string
+        indirizzo:
+          type: string
+        cap:
+          type: string
+        citta:
+          type: string
+        dataInizioValidita:
+          type: string
+          format: date
+        dataFineValidita:
+          type: string
+          format: date
+        codiceIncaricoPadre:
+          type: string
+        equiparata:
+          type: boolean
+        tipo:
+          type: string
+          enum:
+            - DIPARTIMENTO
+            - SEZIONE
+            - SERVIZIO
+        elencoIncaricoDirigenziale:
+          type: array
+          items:
+            $ref: '#/components/schemas/DatiIncaricoDirigenzialeOpenDto'
+    PagedDtoIncaricoDirigenzialeOpenDto:
+      type: object
+      properties:
+        pageNum:
+          type: integer
+          format: int32
+        pageSize:
+          type: integer
+          format: int32
+        totalPages:
+          type: integer
+          format: int32
+        totalElements:
+          type: integer
+          format: int32
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/IncaricoDirigenzialeOpenDto'
+    ElevateQualificazioniOpenDto:
+      type: object
+      properties:
+        codiceUnivoco:
+          type: string
+        descrizione:
+          type: string
+        descrizioneBreve:
+          type: string
+        declaratoriaFunzioni:
+          type: string
+        codiceStrutturaOrganizzativa:
+          type: string
+        nomeStrutturaOrganizzativa:
+          type: string
+        tipoSpecializzazioneIncarico:
+          type: string
+        dataInizio:
+          type: string
+          format: date
+        dataFine:
+          type: string
+          format: date
+        stato:
+          type: string
+        dipendenteRegionale:
+          type: string
+        idCidDipendente:
+          type: string
+        dataInizioAssociazione:
+          type: string
+          format: date
+        dataFineAssociazione:
+          type: string
+          format: date
+        estremiAttoConferimento:
+          type: string
+        tipoIncarico:
+          type: string
+          enum:
+            - P
+            - I
+            - V
+        tipoIncaricoLabel:
+          type: string
+        decodificaCodiciTipoIncarico:
+          type: string
+        tipologiaEq:
+          type: string
+    PagedDtoElevateQualificazioniOpenDto:
+      type: object
+      properties:
+        pageNum:
+          type: integer
+          format: int32
+        pageSize:
+          type: integer
+          format: int32
+        totalPages:
+          type: integer
+          format: int32
+        totalElements:
+          type: integer
+          format: int32
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/ElevateQualificazioniOpenDto'
+    DettaglioDocumentiDipendenteDto:
+      type: object
+      properties:
+        dataAggiornamento:
+          type: string
+          format: date
+        annoRiferimento:
+          type: integer
+          format: int32
+        file:
+          type: array
+          items:
+            type: string
+            format: byte
+    DocumentiDipendenteResponseDto:
+      type: object
+      properties:
+        cid:
+          type: string
+        pubblicabile:
+          type: boolean
+        tipoDocumento:
+          type: string
+          enum:
+            - CURVIT
+            - DICINC
+            - DICRED
+            - DOCCOM
+            - MODA10
+            - MODA11
+        documenti:
+          $ref: '#/components/schemas/DettaglioDocumentiDipendenteDto'
+    PagedDtoDocumentiDipendenteResponseDto:
+      type: object
+      properties:
+        pageNum:
+          type: integer
+          format: int32
+        pageSize:
+          type: integer
+          format: int32
+        totalPages:
+          type: integer
+          format: int32
+        totalElements:
+          type: integer
+          format: int32
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/DocumentiDipendenteResponseDto'
+    AssegnazioneIncaricoOpenDto:
+      type: object
+      properties:
+        idAssegnazione:
+          type: integer
+          format: int64
+        codice:
+          type: string
+        descrizioneCodice:
+          type: string
+        tipologiaCodice:
+          type: string
+        incarico:
+          type: string
+        codiceIncarico:
+          type: string
+        tipologiaIncarico:
+          type: string
+        descrizioneTipologiaIncarico:
+          type: string
+        tipologiaEq:
+          type: string
+        tipoSpecializzazioneIncarico:
+          type: string
+        estremiAttoConferimento:
+          type: string
+        estremiAttoDisassociazione:
+          type: string
+        codiceUfficioDetermine:
+          type: string
+        codiceUfficioDelibere:
+          type: string
+        dataInizioAssegnazione:
+          type: string
+          format: date
+        dataFineAssegnazione:
+          type: string
+          format: date
+        strutturaOrganizzativaEQ:
+          $ref: '#/components/schemas/StrutturaOrganizzativaEqOpenDto'
+    DipendenteRegionaleOpenDto:
+      type: object
+      properties:
+        cid:
+          type: integer
+          format: int64
+        categoria:
+          type: string
+          enum:
+            - ARO
+            - ARE
+            - ARI
+            - ARF
+            - CD
+            - SZ
+            - SR
+            - ALTRO
+        categoriaDescrizione:
+          type: string
+        codiceFiscale:
+          type: string
+        cognome:
+          type: string
+        nome:
+          type: string
+        email:
+          type: string
+        telefono:
+          type: string
+        cellulare:
+          type: string
+        dataInizio:
+          type: string
+          format: date
+        dataFine:
+          type: string
+          format: date
+        tipoContratto:
+          type: string
+          enum:
+            - IND
+            - DET
+            - IND_PT
+            - DET_DG
+        tipoCessazione:
+          type: string
+          enum:
+            - P
+            - S
+        descrizioneCessazione:
+          type: string
+        elencoAssegnazioni:
+          uniqueItems: true
+          type: array
+          items:
+            $ref: '#/components/schemas/AssegnazioneIncaricoOpenDto'
+    PagedDtoDipendenteRegionaleOpenDto:
+      type: object
+      properties:
+        pageNum:
+          type: integer
+          format: int32
+        pageSize:
+          type: integer
+          format: int32
+        totalPages:
+          type: integer
+          format: int32
+        totalElements:
+          type: integer
+          format: int32
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/DipendenteRegionaleOpenDto'
+    StrutturaOrganizzativaEqOpenDto:
+      type: object
+      properties:
+        codice:
+          type: string
+        descrizioneCodice:
+          type: string
+        codiceUfficioDetermine:
+          type: string
+        codiceUfficioDelibere:
+          type: string
+    ContattoDTO:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        nominativo:
+          type: string
+        email:
+          type: string
+    ConvenzioneOpenDto:
+      type: object
+      properties:
+        nomeConvenzione:
+          type: string
+        scopoConvenzione:
+          type: string
+        statoConvenzione:
+          $ref: '#/components/schemas/TipologicaDto'
+        dataDecorrenza:
+          type: string
+          format: date-time
+        dataScadenza:
+          type: string
+          format: date-time
+        contattoAmministrativo:
+          type: string
+        contattoTecnico:
+          type: string
+        responsabile:
+          type: string
+        strutturaReferente:
+          type: string
+        condizioniRinnovo:
+          type: string
+        emailContatto:
+          type: string
+        dataRecesso:
+          type: string
+          format: date-time
+        motivoRecesso:
+          type: string
+        note:
+          type: string
+        contattiConvenzioneList:
+          type: array
+          items:
+            $ref: '#/components/schemas/ContattoDTO'
+        entiConvenzioneList:
+          type: array
+          items:
+            $ref: '#/components/schemas/EnteDTO'
+        struttureConvenzioneList:
+          type: array
+          items:
+            $ref: '#/components/schemas/TipologicaDto'
+    EnteDTO:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        nomeEnte:
+          type: string
+    PagedDtoConvenzioneOpenDto:
+      type: object
+      properties:
+        pageNum:
+          type: integer
+          format: int32
+        pageSize:
+          type: integer
+          format: int32
+        totalPages:
+          type: integer
+          format: int32
+        totalElements:
+          type: integer
+          format: int32
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/ConvenzioneOpenDto'
+    TipologicaDto:
+      type: object
+      properties:
+        codice:
+          type: string
+        descrizione:
+          type: string
+    ConsulenteEsternoOpenDto:
+      type: object
+      properties:
+        codiceFiscale:
+          type: string
+        cognome:
+          type: string
+        nome:
+          type: string
+        email:
+          type: string
+        telefono:
+          type: string
+        cellulare:
+          type: string
+    PagedDtoConsulenteEsternoOpenDto:
+      type: object
+      properties:
+        pageNum:
+          type: integer
+          format: int32
+        pageSize:
+          type: integer
+          format: int32
+        totalPages:
+          type: integer
+          format: int32
+        totalElements:
+          type: integer
+          format: int32
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/ConsulenteEsternoOpenDto'
